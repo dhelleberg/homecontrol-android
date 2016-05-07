@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.multithreaded.homecontrol.data.MQTTRXService;
 
 /**
  * Created by dhelleberg on 23/01/16.
@@ -22,6 +23,12 @@ public class AppModule {
     @Singleton
     public Application provideApplication() {
         return homeControlApplication;
+    }
+
+    @Provides
+    @Singleton
+    public MQTTRXService provideMQTTRXService() {
+        return new MQTTRXService();
     }
 
 

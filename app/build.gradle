@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
+def mqttHost = "pi.home"
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -11,6 +13,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "MQTT_HOST", "\"$mqttHost\""
     }
     buildTypes {
         release {
@@ -37,6 +40,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.4'
 
+    compile 'org.fusesource.mqtt-client:mqtt-client:1.13'
 
     testCompile 'junit:junit:4.12'
 }
