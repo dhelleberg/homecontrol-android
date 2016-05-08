@@ -57,7 +57,7 @@ public class MQTTRXService {
         connection.listener(new ExtendedListener() {
             @Override
             public void onPublish(UTF8Buffer topic, Buffer body, Callback<Callback<Void>> ack) {
-                Log.d(TAG, "onPublish topic: "+topic);
+                Log.d(TAG, "onPublish topic: "+topic+ "body "+body.toString());
 
             }
 
@@ -73,20 +73,23 @@ public class MQTTRXService {
 
             @Override
             public void onPublish(UTF8Buffer topic, Buffer body, Runnable ack) {
-                Log.d(TAG, "onRPublish topic: "+topic);
+                Log.d(TAG, "onRPublish topic: "+topic + " body: "+body.toString());
                 ack.run();
             }
 
             @Override
             public void onFailure(Throwable value) {
-                Log.d(TAG, "onFailure ");
+                Log.d(TAG, "onFailure ", value);
             }
         });
         connection.connect(new Callback<Void>() {
             @Override
             public void onSuccess(Void value) {
-                // Subscribe to a topic
-                Topic[] topics = {new Topic("#", QoS.AT_LEAST_ONCE)};
+                // Subscribe to all topics
+                Topic[] topics = new Topic[Constants.Topics.values().length];
+                for (int i = 0; i < Constants.Topics.values().length; i++) {
+                    topics[i] = new Topic(Constants.Topics.values()[i].getTopicPath(), QoS.AT_LEAST_ONCE);
+                }
                 connection.subscribe(topics, new Callback<byte[]>() {
 
                     @Override
